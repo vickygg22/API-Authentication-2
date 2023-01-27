@@ -1,7 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
+			message: "",
 			demo: [
 				{
 					title: "FIRST",
@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			token: ""
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -21,13 +22,52 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
-			getMessage: async () => {
+			login: async (email, password) => {
+				try{
+					const response = await fetch("https://3001-4geeksacade-reactflaskh-k2lys8psix6.ws-eu84.gitpod.io/api/login", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						"email": email,
+						"password": password
+					})
+				})
+				const data = await response.json()
+				console.log(data)
+				sessionStorage.setItem("token", data.access_token)
+				setStore({token: data.access_token})
+				return true
+				}
+				catch(error){
+					console.error("There has been some issue logging in")
+				}
+				
+			},
+
+			refreshed: () => {
+				const token = sessionStorage.getItem("token");
+				if (token && token != "" && token != undefined && token != "undefined") {
+					setStore({token: token})
+				}
+			},
+
+			logout: () => {
+				sessionStorage.removeItem("token")
+				setStore({token: ""})
+			},
+
+			accessPrivate: async () => {
 				try{
 					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+					const resp = await fetch("https://3001-4geeksacade-reactflaskh-k2lys8psix6.ws-eu84.gitpod.io/api/private", {
+						headers: {
+							Authorization: "Bearer " + store.token
+						}
+					})
 					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
+					console.log(data)
 					return data;
 				}catch(error){
 					console.log("Error loading message from backend", error)

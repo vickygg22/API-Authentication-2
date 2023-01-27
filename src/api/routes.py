@@ -41,4 +41,14 @@ def login():
     
     return jsonify({"msg": "Bad username or password"}), 401
 
+@api.route('/private', methods=['GET'])
+@jwt_required()
+def access_private():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email = user_email).first()
+    response_body = {
+        "message": "Hello! You are in the private component! :)"
+    }
+
+    return jsonify(user.serialize()), 200
     

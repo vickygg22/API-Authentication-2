@@ -1,3 +1,17 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+.loginButton{
+    margin-left: 20px;
+}
+h6{
+    margin-top: 30px;
+}
+.btns{
+    border: 1px solid gray;
+    margin-left: 10px;
+    background-color: lightgray;
+}
+.btns:hover{
+    background-color: rgb(172, 171, 171);
+}
+.forms{
+    padding: 40px;
+}

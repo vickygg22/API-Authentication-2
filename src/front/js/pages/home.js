@@ -8,7 +8,9 @@ export const Home = () => {
 
 	return (
 		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
+			<h1>Welcome to the Home page!</h1>
+			<h6>You don't have an account? Sign up by clicking on the pertinent button</h6>
+			<h6>You already have an account? What are you waiting for? Log in!</h6>
 			<p>
 				<img src={rigoImageUrl} />
 			</p>
